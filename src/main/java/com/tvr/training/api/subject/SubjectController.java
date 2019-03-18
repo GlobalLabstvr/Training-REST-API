@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,7 +53,7 @@ public class SubjectController {
         }).orElseThrow(() -> new ResourceNotFoundException("courseId " + courseId + " not found"));
     }
 
-  /*  @PutMapping("/courses/{courseId}/subjects/{subjectId}")
+    @PutMapping("/courses/subjects/{subjectId}")
     public Subject updateSubject(@PathVariable (value = "courseId") Long courseId,
                                  @PathVariable (value = "subjectId") Long subjectId,
                                  @Valid @RequestBody Subject subjectRequest) {
@@ -66,7 +67,7 @@ public class SubjectController {
             return subjectRepository.save(subject);
         }).orElseThrow(() -> new ResourceNotFoundException("SubjectId " + subjectId + "not found"));
     }
-*/
+
    /* @DeleteMapping("/courses/{courseId}/subjects/{subjectId}")
     public ResponseEntity<Subject> deleteSubject(@PathVariable (value = "courseId") Long courseId,
                               @PathVariable (value = "subjectId") Long subjectId) {

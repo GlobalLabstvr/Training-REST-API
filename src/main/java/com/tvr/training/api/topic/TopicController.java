@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tvr.training.api.exception.ResourceNotFoundException;
+import com.tvr.training.api.subject.Subject;
 import com.tvr.training.api.subject.SubjectRepository;
 
 @RestController
@@ -51,22 +53,25 @@ public class TopicController {
             return topicRepository.save(topic);
         }).orElseThrow(() -> new ResourceNotFoundException("courseId " + subjectId + " not found"));
     }
-
-  /*  @PutMapping("/courses/{courseId}/subjects/{subjectId}")
-    public Topic updateSubject(@PathVariable (value = "courseId") Long courseId,
-                                 @PathVariable (value = "subjectId") Long subjectId,
-                                 @Valid @RequestBody Topic subjectRequest) {
-        if(!courseRepository.existsById(courseId)) {
-            throw new ResourceNotFoundException("courseId " + courseId + " not found");
+    @PutMapping("/subjects/{subjectId}/topics/{topicId}")
+    public Topic updateTopic(@PathVariable (value = "subjectId") Long subjectId,
+                                 @PathVariable (value = "topicId") Long topicId,
+                                 @Valid @RequestBody Topic topicRequest) {
+        if(!subjectRepository.existsById(subjectId)) {
+            throw new ResourceNotFoundException("subjectId " + subjectId + " not found");
         }
 
-        return subjectRepository.findById(subjectId).map(Topic -> {
-            Topic.setName(subjectRequest.getName());
-            Topic.setDescription(subjectRequest.getDescription());
-            return subjectRepository.save(Topic);
-        }).orElseThrow(() -> new ResourceNotFoundException("SubjectId " + subjectId + "not found"));
+        return topicRepository.findById(topicId).map(topic -> {
+            topic.setName(topicRequest.getName());
+            topic.setDescription(topicRequest.getDescription());
+            return topicRepository.save(topic);
+        }).orElseThrow(() -> new ResourceNotFoundException("TopicId " + topicId + "not found"));
     }
-*/
+
+   
+
+   
+
    /* @DeleteMapping("/courses/{courseId}/subjects/{subjectId}")
     public ResponseEntity<Topic> deleteSubject(@PathVariable (value = "courseId") Long courseId,
                               @PathVariable (value = "subjectId") Long subjectId) {
