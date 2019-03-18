@@ -14,4 +14,6 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
 
 	List<Topic> findBySubjectId(Long subjectId);
 	
+	List<Topic> findByNameContaining(String name);
+	
 }

@@ -21,7 +21,7 @@ import com.tvr.training.api.slide.Slide;
 public class Student  {
 	@Id
 	@Column(name = "StudentID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
     
     @NotNull

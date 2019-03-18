@@ -21,7 +21,7 @@ import com.tvr.training.api.topic.Topic;
 public class Slide  {
 	@Id
 	@Column(name = "SlideID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
     
     @NotNull

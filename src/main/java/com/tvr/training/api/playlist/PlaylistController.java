@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tvr.training.api.exception.ResourceNotFoundException;
-import com.tvr.training.api.topic.Topic;
 import com.tvr.training.api.topic.TopicRepository;
 
 @RestController
@@ -53,21 +51,5 @@ public class PlaylistController {
             return playlistRepository.save(playlist);
         }).orElseThrow(() -> new ResourceNotFoundException("topicId " + topicId + " not found"));
     }
-    
-    @PutMapping("/topics/{topicId}/playlists/{playlistId}")
-    public Playlist updatePlaylist(@PathVariable (value = "topicId") Long topicId,
-                                 @PathVariable (value = "playlistId") Long playlistId,
-                                 @Valid @RequestBody Playlist playlistRequest) {
-        if(!topicRepository.existsById(topicId)) {
-            throw new ResourceNotFoundException("topicId " + topicId + " not found");
-        }
-
-        return playlistRepository.findById(playlistId).map(playlist -> {
-            playlist.setName(playlistRequest.getName());
-            playlist.setDescription(playlistRequest.getDescription());
-            return playlistRepository.save(playlist);
-        }).orElseThrow(() -> new ResourceNotFoundException("PlaylistId " + playlistId + "not found"));
-    }
-    
 
 }

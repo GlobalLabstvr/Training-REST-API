@@ -22,7 +22,7 @@ public class Subject {
 	
 	@Id
 	@Column(name = "SubjectID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
     @NotNull

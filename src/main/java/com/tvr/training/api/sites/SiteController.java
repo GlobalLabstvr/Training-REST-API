@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tvr.training.api.exception.ResourceNotFoundException;
-import com.tvr.training.api.playlist.Playlist;
 import com.tvr.training.api.topic.TopicRepository;
 
 @RestController
@@ -52,20 +50,6 @@ public class SiteController {
             site.setTopic(topic);         
             return siteRepository.save(site);
         }).orElseThrow(() -> new ResourceNotFoundException("topicId " + topicId + " not found"));
-    }
-    @PutMapping("/topics/{topicId}/sites/{siteId}")
-    public Site updateSite(@PathVariable (value = "topicId") Long topicId,
-                                 @PathVariable (value = "siteId") Long siteId,
-                                 @Valid @RequestBody Site siteRequest) {
-        if(!topicRepository.existsById(topicId)) {
-            throw new ResourceNotFoundException("topicId " + topicId + " not found");
-        }
-
-        return siteRepository.findById(siteId).map(site -> {
-            site.setName(siteRequest.getName());
-            site.setDescription(siteRequest.getDescription());
-            return siteRepository.save(site);
-        }).orElseThrow(() -> new ResourceNotFoundException("SiteId " + siteId + "not found"));
     }
 
 }

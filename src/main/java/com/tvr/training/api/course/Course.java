@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 public class Course  {
     @Id
     @Column(name = "CourseID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull

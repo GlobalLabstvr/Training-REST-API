@@ -14,4 +14,6 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
 	List<Subject> findByCourseId(Long courseId);
 	
+	List<Subject> findByNameContaining(String name);
+	
 }
