@@ -1,6 +1,7 @@
 package com.tvr.training.api.program;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tvr.training.api.exception.ResourceNotFoundException;
@@ -28,8 +30,16 @@ public class ProgramController {
     private TopicRepository topicRepository;
     
     @GetMapping("/programs")
-    public List<Program> getAllprograms( ) {
-        return programRepository.findAll( );
+    public List<Program> getAllPrograms(
+    		@RequestParam("name") String name) {
+        List<Program> list = new ArrayList<Program>();
+    	if(name!=null && !name.equals("")) {
+        	list = programRepository.findByNameContaining(name);
+        }
+    	else {
+    		list = programRepository.findAll();
+    	}
+    	return list;
     }
     
     @GetMapping("programs/{programId}")
@@ -38,14 +48,8 @@ public class ProgramController {
         return programRepository.findById(programId);
     }
     
-    @GetMapping("/topics/{topicId}/programs")
-    public List<Program> geprogramsByTopicId(
-    		@PathVariable (value = "topicId") Long topicId) {
-        return programRepository.findByTopicId(topicId);
-    }
-    
-       
-    @PostMapping("/topics/{topicId}/programs")
+          
+    @PostMapping("/programs/{topicId}")
     public Program createTopic(
     		@PathVariable (value = "topicId") Long topicId,
     		@Valid @RequestBody Program program) {
@@ -56,20 +60,16 @@ public class ProgramController {
     }
 
 
-    @PutMapping("/topics/{topicId}/programs/{programsId}")
-public Program updateProgram(@PathVariable (value = "topicId") Long topicId,
-                             @PathVariable (value = "programId") Long programId,
-                             @Valid @RequestBody Program programRequest) {
-    if(!topicRepository.existsById(topicId)) {
-        throw new ResourceNotFoundException("topicId " + topicId + " not found");
-    }
-
-    return programRepository.findById(programId).map(program -> {
-        program.setName(programRequest.getName());
-        program.setDescription(programRequest.getDescription());
-        return programRepository.save(program);
-    }).orElseThrow(() -> new ResourceNotFoundException("ProgramId " + programId + "not found"));
-}
-}
+    @PutMapping("/programs")
+    public Program updateProgram(@Valid @RequestBody Program programRequest) {
+    	Long programId = programRequest.getId();
+        return programRepository.findById(programId).map(program -> {
+        	program.setTopic(programRequest.getTopic());
+            program.setName(programRequest.getName());
+            program.setDescription(programRequest.getDescription());
+            program.setUrl(programRequest.getUrl());
+          return programRepository.save(program);
+        }).orElseThrow(() -> new ResourceNotFoundException("programId " + programId + "not found"));
+    }}
 
 

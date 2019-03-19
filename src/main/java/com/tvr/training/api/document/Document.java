@@ -1,5 +1,4 @@
-package com.tvr.training.api.program;
-
+package com.tvr.training.api.document;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,10 +17,10 @@ import com.tvr.training.api.topic.Topic;
 
 
 @Entity
-@Table(name = "programs")
-public class Program  {
+@Table(name = "documents")
+public class Document  {
 	@Id
-	@Column(name = "SiteID")
+	@Column(name = "DocumentID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
     
@@ -34,10 +33,7 @@ public class Program  {
     @Size(max = 250)
     private String description;
     
-    @NotNull
-    @Size(max = 250)
-    private String url;
-    
+   
 
     @ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinColumn(name = "TopicID")
@@ -67,14 +63,7 @@ public class Program  {
         this.description = description;
     }
     
-    public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
+    
 	public Topic getTopic() {
 		return topic;
 	}
