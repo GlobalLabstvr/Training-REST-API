@@ -42,6 +42,9 @@ public class Slide  {
     private String master;
     
     
+    @Size(max = 250)
+    private String image;
+    
 
 	@NotNull
     @Size(max = 250)
@@ -57,7 +60,7 @@ public class Slide  {
     
 	@ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
 	@JoinColumn(name = "SiteID")
-    private Site sites;
+    private Site site;
     
 	@ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
 	@JoinColumn(name = "DocumentID")
@@ -107,8 +110,48 @@ public class Slide  {
 	public void setStudent(String student) {
 		this.student = student;
 	}
-
+	
   
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Program getProgram() {
+		return program;
+	}
+
+	public void setProgram(Program program) {
+		this.program = program;
+	}
+
+	public Playlist getPlaylist() {
+		return playlist;
+	}
+
+	public void setPlaylist(Playlist playlist) {
+		this.playlist = playlist;
+	}
+
+	public Site getSite() {
+		return site;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
+	}
+
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+
 	public Topic getTopic() {
 		return topic;
 	}

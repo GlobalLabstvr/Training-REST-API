@@ -33,6 +33,10 @@ public class Document  {
     @Size(max = 250)
     private String description;
     
+    @NotNull
+    @Size(max = 250)
+    private String url;
+    
    
 
     @ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
@@ -64,6 +68,14 @@ public class Document  {
     }
     
     
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public Topic getTopic() {
 		return topic;
 	}
