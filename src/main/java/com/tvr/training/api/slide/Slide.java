@@ -13,6 +13,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.tvr.training.api.document.Document;
+import com.tvr.training.api.playlist.Playlist;
+import com.tvr.training.api.program.Program;
+import com.tvr.training.api.sites.Site;
 import com.tvr.training.api.topic.Topic;
 
 
@@ -35,9 +39,31 @@ public class Slide  {
     
     @NotNull
     @Size(max = 250)
-    private String image;
+    private String master;
+    
     
 
+	@NotNull
+    @Size(max = 250)
+    private String student;
+    
+	@ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+	@JoinColumn(name = "ProgramID")
+    private Program program;
+    
+	@ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+	@JoinColumn(name = "PlaylistID")
+    private Playlist playlist;
+    
+	@ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+	@JoinColumn(name = "SiteID")
+    private Site sites;
+    
+	@ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+	@JoinColumn(name = "DocumentID")
+    private Document document;
+    
+        
     @ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinColumn(name = "TopicID")
     private Topic topic;
@@ -66,14 +92,23 @@ public class Slide  {
         this.description = description;
     }
     
-    public String getImage() {
-		return image;
+    public String getMaster() {
+		return master;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setMaster(String master) {
+		this.master = master;
 	}
 
+	public String getStudent() {
+		return student;
+	}
+
+	public void setStudent(String student) {
+		this.student = student;
+	}
+
+  
 	public Topic getTopic() {
 		return topic;
 	}
