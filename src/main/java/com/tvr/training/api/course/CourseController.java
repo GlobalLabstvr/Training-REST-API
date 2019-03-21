@@ -25,7 +25,7 @@ public class CourseController {
 
     @GetMapping("/courses")
     public List<Course> getAllcourses(
-    		 @RequestParam("name") String name) {
+    		 @RequestParam(value="name",required=false) String name) {
         List<Course> list = new ArrayList<Course>();
     	if(name!=null && !name.equals("")) {
         	list = courseRepository.findByNameContaining(name);
