@@ -45,6 +45,11 @@ public class SubjectController {
 	public Optional<Subject> getsubjects(@PathVariable(value = "subjectId") Long subjectId) {
 		return subjectRepository.findById(subjectId);
 	}
+	
+	@GetMapping("/subjects/course/{courseId}")
+	public List<Subject> getsubjectsByCourseId(@PathVariable(value = "courseId") Long courseId) {
+		return subjectRepository.findByCourseId(courseId);
+	}
 
 	@PostMapping("/subjects/{courseId}")
 	public Subject createSubject(
