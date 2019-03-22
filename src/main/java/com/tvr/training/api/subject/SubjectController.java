@@ -30,7 +30,7 @@ public class SubjectController {
 
 	@GetMapping("/subjects")
 	public List<Subject> getAllsubjects(
-			@RequestParam("name") String name) {
+			@RequestParam(value="name",required=false) String name) {
         List<Subject> list = new ArrayList<Subject>();
     	if(name!=null && !name.equals("")) {
         	list = subjectRepository.findByNameContaining(name);
