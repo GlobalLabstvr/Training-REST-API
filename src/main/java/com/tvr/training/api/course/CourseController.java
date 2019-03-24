@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tvr.training.api.exception.ResourceNotFoundException;
+import com.tvr.training.api.model.CourseVO;
+import com.tvr.training.api.model.SubjectVO;
+import com.tvr.training.api.subject.Subject;
+import com.tvr.training.api.subject.SubjectRepository;
 
 @RestController
 public class CourseController {
@@ -23,8 +27,12 @@ public class CourseController {
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private SubjectRepository subjectRepository;
+
+    
     @GetMapping("/courses")
-    public List<Course> getAllcourses(
+    public List<CourseVO> getAllcourses(
     		 @RequestParam(value="name",required=false) String name) {
         List<Course> list = new ArrayList<Course>();
     	if(name!=null && !name.equals("")) {
@@ -33,7 +41,19 @@ public class CourseController {
     	else {
     		list = courseRepository.findAll();
     	}
-    	return list;
+    	List<CourseVO> courseVOList = new ArrayList<>();
+    	
+    	list.forEach(course -> {
+    		CourseVO courseVO = copy(course);
+    		List<Subject>subjects = subjectRepository.findByCourseId(course.getId());
+    		subjects.forEach(subject -> {
+    			SubjectVO subjectVO = copy(subject);
+    			courseVO.getSubjects().add(subjectVO);
+    		});
+    		courseVOList.add(courseVO);
+    	});
+    	
+    	return courseVOList;
     }
     
     @GetMapping("/courses/{courseId}")
@@ -54,6 +74,22 @@ public class CourseController {
             course.setDescription(courseRequest.getDescription());
             return courseRepository.save(course);
         }).orElseThrow(() -> new ResourceNotFoundException("courseId " + courseId + " not found"));
+    }
+    
+    private CourseVO copy(Course course) {
+    	CourseVO courseVO = new CourseVO();
+    	courseVO.setId(course.getId());
+    	courseVO.setName(course.getName());
+    	courseVO.setDescription(course.getDescription());
+    	return courseVO;
+    }
+    
+    private SubjectVO copy(Subject subject) {
+    	SubjectVO subjectVO = new SubjectVO();
+    	subjectVO.setId(subject.getId());
+    	subjectVO.setName(subject.getName());
+    	subjectVO.setDescription(subject.getDescription());
+    	return subjectVO;
     }
 
 }
