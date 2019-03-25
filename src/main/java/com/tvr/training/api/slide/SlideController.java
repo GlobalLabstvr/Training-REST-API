@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tvr.training.api.document.Document;
 import com.tvr.training.api.document.DocumentRepository;
 import com.tvr.training.api.exception.ResourceNotFoundException;
+import com.tvr.training.api.model.TopicVO;
 import com.tvr.training.api.playlist.Playlist;
 import com.tvr.training.api.playlist.PlaylistRepository;
 import com.tvr.training.api.program.Program;
@@ -67,7 +68,7 @@ public class SlideController {
         return slideRepository.findById(slideId);
     }
     
-  
+   
     @PostMapping("/slides/{topicId}")
     public Slide createTopic(
     		@PathVariable (value = "topicId") Long topicId,
