@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.tvr.training.api.document.Document;
 import com.tvr.training.api.document.DocumentRepository;
 import com.tvr.training.api.exception.ResourceNotFoundException;
@@ -23,6 +22,7 @@ import com.tvr.training.api.model.DocumentVO;
 import com.tvr.training.api.model.PlaylistVO;
 import com.tvr.training.api.model.ProgramVO;
 import com.tvr.training.api.model.SiteVO;
+import com.tvr.training.api.model.SlideVO;
 import com.tvr.training.api.model.TopicVO;
 import com.tvr.training.api.playlist.Playlist;
 import com.tvr.training.api.playlist.PlaylistRepository;
@@ -30,6 +30,8 @@ import com.tvr.training.api.program.Program;
 import com.tvr.training.api.program.ProgramRepository;
 import com.tvr.training.api.sites.Site;
 import com.tvr.training.api.sites.SiteRepository;
+import com.tvr.training.api.slide.Slide;
+import com.tvr.training.api.slide.SlideRepository;
 import com.tvr.training.api.subject.SubjectRepository;
 
 @RestController
@@ -52,6 +54,9 @@ public class TopicController {
     
     @Autowired
     private DocumentRepository documentRepository;
+    
+    @Autowired
+    private SlideRepository slideRepository;
     
     @GetMapping("/topics")
     public List<Topic> getAllsubjects(
@@ -99,6 +104,12 @@ public class TopicController {
             	  DocumentVO documentVO = copy(document);
             	  topicVO.getDocuments().add(documentVO);
               });
+              
+              List <Slide> slides = slideRepository.findByTopicId(topicVO.getId());
+              slides.forEach(slide -> {
+            	  SlideVO slideVO = copy(slide);
+            	  topicVO.getSlides().add(slideVO);
+              });
             
               
     	return topicVO;
@@ -142,7 +153,8 @@ public class TopicController {
     	playlistVO.setUrl(playlist.getUrl());
     	return playlistVO;
     }
-     private ProgramVO copy(Program program) {
+     
+    private ProgramVO copy(Program program) {
     	 ProgramVO programVO = new ProgramVO();
     	 programVO.setId(program.getId());
     	 programVO.setName(program.getName());
@@ -150,6 +162,7 @@ public class TopicController {
     	 programVO.setUrl(program.getUrl());
     	 return programVO;
      }
+     
      private SiteVO copy(Site site) {
     	 SiteVO siteVO = new SiteVO();
     	 siteVO.setId(site.getId());
@@ -158,7 +171,8 @@ public class TopicController {
     	 siteVO.setUrl(site.getUrl());
     	 return siteVO;
      }
-    private DocumentVO copy(Document document) {
+    
+     private DocumentVO copy(Document document) {
     	DocumentVO documentVO = new DocumentVO();
     	documentVO.setId(document.getId());
     	documentVO.setName(document.getName());
@@ -166,5 +180,22 @@ public class TopicController {
     	documentVO.setUrl(document.getUrl());
     	return documentVO;
     }
+    
+    private SlideVO copy(Slide slide) {
+    	SlideVO slideVO = new SlideVO();
+    	slideVO.setId(slide.getId());
+    	slideVO.setName(slide.getName());
+    	slideVO.setDescription(slide.getDescription());
+    	slideVO.setMaster(slide.getMaster());
+    	slideVO.setStudent(slide.getStudent());
+    	slideVO.setProgram(""+slide.getProgram().getId());
+    	slideVO.setPlaylist(""+slide.getPlaylist().getId());
+    	slideVO.setDocument(""+slide.getDocument().getId());
+    	slideVO.setSite(""+slide.getSite().getId());
+    	
+    	
+    	return slideVO;
+    }
+    
 
 }

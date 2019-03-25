@@ -23,6 +23,8 @@ public class TopicVO {
 	    private List<DocumentVO> documents = new ArrayList<>();
 	    
 	    private List<SiteVO> sites = new ArrayList<>();
+	    
+	    private List<SlideVO> slides = new ArrayList<>();
 
 		public Long getId() {
 			return id;
@@ -87,5 +89,15 @@ public class TopicVO {
 		public void setSites(List<SiteVO> sites) {
 			this.sites = sites;
 		}
+
+		public List<SlideVO> getSlides() {
+			return slides;
+		}
+
+		public void setSlides(List<SlideVO> slides) {
+			this.slides = slides;
+		}
+		
+		
 	    
 }
