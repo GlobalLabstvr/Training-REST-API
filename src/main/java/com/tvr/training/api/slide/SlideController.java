@@ -97,37 +97,46 @@ public class SlideController {
     	Program programResult = null;
     	
     	
-    	if((playlistResult = playlistRepository.findById(playlistId).get())!=null) {
-    		slideResult.setPlaylist(playlistResult);  
-    	} 
-    	else
+    	if(playlistId!=null)
     	{
-    		throw new ResourceNotFoundException("playlistId " + playlistId + " not found");
+    		if ((playlistResult = playlistRepository.findById(playlistId).get())!=null) {
+        		slideResult.setPlaylist(playlistResult);  
+        	} 
+        	else
+        	{
+        		throw new ResourceNotFoundException("playlistId " + playlistId + " not found");
+        	}
     	}
     	
-    	if((programResult = programRepository.findById(programId).get())!=null) {
-    		slideResult.setProgram(programResult);  
-    	} 
-    	else
-    	{
-    		throw new ResourceNotFoundException("programId " + programId + " not found");
+    	if(programId!=null) {
+	    	if((programResult = programRepository.findById(programId).get())!=null) {
+	    		slideResult.setProgram(programResult);  
+	    	} 
+	    	else
+	    	{
+	    		throw new ResourceNotFoundException("programId " + programId + " not found");
+	    	}
     	}
     	
-    	if((siteResult = siteRepository.findById(siteId).get())!=null) {
+    	if(siteId!=null) {
+    	if(
+    			(siteResult = siteRepository.findById(siteId).get())!=null) {
     		slideResult.setSite(siteResult);  
     	} 
     	else
     	{
     		throw new ResourceNotFoundException("siteId " + siteId + " not found");
     	}
+    	}
     	
-    	if((documentResult = documentRepository.findById(documentId).get())!=null) {
+    	if(documentId!=null) {
+    	if( (documentResult = documentRepository.findById(documentId).get())!=null) {
     		slideResult.setDocument(documentResult);  
     	} 
     	else
     	{
     		throw new ResourceNotFoundException("documentId " + documentId + " not found");
-    	}
+    	}}
     	
        return slideRepository.save(slideResult);
     }
