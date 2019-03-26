@@ -73,55 +73,63 @@ public class SlideController {
     public Slide createTopic(
     		@PathVariable (value = "topicId") Long topicId,
     		@Valid @RequestBody Slide slide) {
+    	
+    	System.out.println(slide);
+    	Long playlistId = slide.getPlaylist().getId();
+    	Long programId = slide.getProgram().getId();
+    	Long siteId = slide.getSite().getId();
+    	Long documentId = slide.getDocument().getId();
+    	
+    	Slide slideResult =  topicRepository.findById(topicId).map(topic -> {
+			slide.setTopic(topic);
+			slide.setDocument(null);
+			slide.setPlaylist(null);
+			slide.setSite(null);
+			slide.setProgram(null);
+			return slideRepository.save(slide);
+		}).orElseThrow(() -> new ResourceNotFoundException("topic " + topicId + " not found"));
         
-    	Slide slideResult = null;
-    	Topic topicResult = null;
+
+
     	Playlist playlistResult = null;
     	Site siteResult = null;
     	Document documentResult = null;
     	Program programResult = null;
     	
-    	if((topicResult=topicRepository.findById(topicId).get())!=null) {
-            slide.setTopic(topicResult);  
+    	
+    	if((playlistResult = playlistRepository.findById(playlistId).get())!=null) {
+    		slideResult.setPlaylist(playlistResult);  
     	} 
     	else
     	{
-    		throw new ResourceNotFoundException("topicId " + topicId + " not found");
+    		throw new ResourceNotFoundException("playlistId " + playlistId + " not found");
     	}
     	
-    	if((playlistResult = playlistRepository.findById(slide.getPlaylist().getId()).get())!=null) {
-            slide.setPlaylist(playlistResult);  
+    	if((programResult = programRepository.findById(programId).get())!=null) {
+    		slideResult.setProgram(programResult);  
     	} 
     	else
     	{
-    		throw new ResourceNotFoundException("playlistId " + slide.getPlaylist().getId() + " not found");
+    		throw new ResourceNotFoundException("programId " + programId + " not found");
     	}
     	
-    	if((programResult = programRepository.findById(slide.getProgram().getId()).get())!=null) {
-            slide.setProgram(programResult);  
+    	if((siteResult = siteRepository.findById(siteId).get())!=null) {
+    		slideResult.setSite(siteResult);  
     	} 
     	else
     	{
-    		throw new ResourceNotFoundException("programId " + slide.getProgram().getId() + " not found");
+    		throw new ResourceNotFoundException("siteId " + siteId + " not found");
     	}
     	
-    	if((siteResult = siteRepository.findById(slide.getSite().getId()).get())!=null) {
-            slide.setSite(siteResult);  
+    	if((documentResult = documentRepository.findById(documentId).get())!=null) {
+    		slideResult.setDocument(documentResult);  
     	} 
     	else
     	{
-    		throw new ResourceNotFoundException("siteId " + slide.getSite().getId() + " not found");
+    		throw new ResourceNotFoundException("documentId " + documentId + " not found");
     	}
     	
-    	if((documentResult = documentRepository.findById(slide.getDocument().getId()).get())!=null) {
-            slide.setDocument(documentResult);  
-    	} 
-    	else
-    	{
-    		throw new ResourceNotFoundException("documentId " + slide.getDocument().getId() + " not found");
-    	}
-    	
-       return slideRepository.save(slide);
+       return slideRepository.save(slideResult);
     }
     
     @PutMapping("/slides")
