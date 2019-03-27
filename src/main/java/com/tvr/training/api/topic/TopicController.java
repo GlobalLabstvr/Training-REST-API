@@ -110,7 +110,8 @@ public class TopicController {
             	  SlideVO slideVO = copy(slide);
             	  topicVO.getSlides().add(slideVO);
               });
-            
+          	
+          
               
     	return topicVO;
     }
@@ -125,7 +126,9 @@ public class TopicController {
             return topicRepository.save(topic);
         }).orElseThrow(() -> new ResourceNotFoundException("courseId " + subjectId + " not found"));
     }
-
+    
+        
+      
     @PutMapping("/topics")
     public Topic updateTopic(@Valid @RequestBody Topic topicRequest) {
     	Long topicId = topicRequest.getId();
@@ -136,6 +139,7 @@ public class TopicController {
             return topicRepository.save(topic);
         }).orElseThrow(() -> new ResourceNotFoundException("TopicId " + topicId + "not found"));
     }
+
     
     private TopicVO copy(Topic topic) {
     	TopicVO topicVO = new TopicVO();
@@ -151,6 +155,7 @@ public class TopicController {
     	playlistVO.setName(playlist.getName());
     	playlistVO.setDescription(playlist.getDescription());
     	playlistVO.setUrl(playlist.getUrl());
+    	
     	return playlistVO;
     }
      
@@ -160,6 +165,7 @@ public class TopicController {
     	 programVO.setName(program.getName());
     	 programVO.setDescription(program.getDescription());
     	 programVO.setUrl(program.getUrl());
+    	 
     	 return programVO;
      }
      
@@ -174,28 +180,41 @@ public class TopicController {
     
      private DocumentVO copy(Document document) {
     	DocumentVO documentVO = new DocumentVO();
-    	documentVO.setId(document.getId());
+        documentVO.setId(document.getId());
     	documentVO.setName(document.getName());
     	documentVO.setDescription(document.getDescription());
     	documentVO.setUrl(document.getUrl());
     	return documentVO;
     }
     
-    private SlideVO copy(Slide slide) {
+  private SlideVO copy(Slide slide) {
     	SlideVO slideVO = new SlideVO();
     	slideVO.setId(slide.getId());
     	slideVO.setName(slide.getName());
     	slideVO.setDescription(slide.getDescription());
     	slideVO.setMaster(slide.getMaster());
     	slideVO.setStudent(slide.getStudent());
-    	slideVO.setProgram(""+slide.getProgram().getId());
-    	slideVO.setPlaylist(""+slide.getPlaylist().getId());
-    	slideVO.setDocument(""+slide.getDocument().getId());
-    	slideVO.setSite(""+slide.getSite().getId());
-    	
-    	
-    	return slideVO;
-    }
-    
+    	if(slide.getPlaylist()!=null) 
+    	   {
+    		   slideVO.setPlaylist(""+slide.getPlaylist().getId());
+               }
+        
+        if(slide.getProgram()!=null)
+        {
+        	slideVO.setProgram(""+slide.getProgram().getId());
+            }
+        
+        if(slide.getSite()!=null) 
+        {
+        	slideVO.setSite(""+slide.getSite().getId());
+            }
+        
+        if(slide.getDocument()!=null)
+        {
+        	slideVO.setDocument(""+slide.getDocument().getId());
+        }
 
-}
+       return slideVO;
+    
+  }
+    }
